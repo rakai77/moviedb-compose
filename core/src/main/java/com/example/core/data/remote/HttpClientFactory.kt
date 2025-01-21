@@ -20,7 +20,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.parameters
 import io.ktor.serialization.gson.gson
 
-class HttpClientFactory {
+object HttpClientFactory {
 
     fun create() = HttpClient(OkHttp) {
         expectSuccess = false

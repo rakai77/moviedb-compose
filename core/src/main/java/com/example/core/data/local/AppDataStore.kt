@@ -31,6 +31,5 @@ class AppDataStore(private val context: Context) {
 
     companion object {
         val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
-
     }
 }
