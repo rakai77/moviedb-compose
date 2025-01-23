@@ -42,6 +42,8 @@ android {
 dependencies {
     implementation(project(":common-ui"))
     implementation(project(":core"))
+    implementation(project(":main:feature-home"))
+    implementation(project(":main:feature-profile"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

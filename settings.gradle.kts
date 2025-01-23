@@ -23,3 +23,5 @@ rootProject.name = "Moviedb"
 include(":app")
 include(":common-ui")
 include(":core")
+include(":main:feature-home")
+include(":main:feature-profile")
