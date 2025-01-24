@@ -7,13 +7,13 @@ import com.example.common_ui.navigation.AppRoute
 val bottomTabs = listOf(
     Tab(
         route = AppRoute.Home.route,
-        label = "Home Screen",
+        label = R.string.home_label,
         selectedIcon = R.drawable.ic_home_filled,
         unselectedIcon = R.drawable.ic_home_outlined,
     ),
     Tab(
         route = AppRoute.Profile.route,
-        label = "Profile Screen",
+        label = R.string.profile_label,
         selectedIcon = R.drawable.ic_profile_filled,
         unselectedIcon = R.drawable.ic_profile_outlined,
     )
