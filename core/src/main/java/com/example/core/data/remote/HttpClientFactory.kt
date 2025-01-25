@@ -67,7 +67,7 @@ object HttpClientFactory {
         }
 
         defaultRequest {
-            host = "https://api.themoviedb.org/3/"
+            host = "api.themoviedb.org/3"
             headers {
                 append(HttpHeaders.ContentType, "application/json")
             }

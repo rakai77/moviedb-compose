@@ -11,10 +11,11 @@ data class AllTrendingItem(
     val posterPath: String,
     val backdropPath: String,
     val mediaType: String,
-    val originalName: String,
-    val name: String,
+    val originalName: String? = null,
+    val name: String? = null,
     val id: Int,
-    val originalTitle: String,
-    val title: String,
-    val releaseDate: String
+    val originalTitle: String? = null,
+    val title: String? = null,
+    val releaseDate: String? = null,
+    val firstAirDate: String? = null
 )

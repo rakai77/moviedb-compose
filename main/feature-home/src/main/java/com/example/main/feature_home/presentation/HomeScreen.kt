@@ -1,5 +1,7 @@
 package com.example.main.feature_home.presentation
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +25,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +36,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,15 +44,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.common_ui.theme.BlueAccent
 import com.example.common_ui.theme.DarkGrey
-import com.example.main.feature_home.data.ImageData
+import com.example.common_ui.utils.setImage
+import com.example.core.domain.model.AllTrendingItem
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,29 +65,10 @@ fun HomeScreen(
     navHostController: NavHostController
 ) {
 
-    val imageList = listOf(
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        ),
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        ),
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        ),
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        ),
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        ),
-        ImageData(
-            "https://image.tmdb.org/t/p/original/gklrevVndG98GHGDwfm8y8kxESo.jpg"
-        )
-    )
-
     val hazeState = remember { HazeState() }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val homeViewModel: HomeViewModel = koinViewModel()
+    val trendingState = homeViewModel.trendingState.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -118,6 +108,7 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -125,7 +116,27 @@ fun HomeScreen(
                 .padding(paddingValues)
         ) {
 
-            TrendingSliderSection(hazeState, imageList)
+            when(trendingState.value) {
+                is HomeUiState.LoadingTrending -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(36.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                is HomeUiState.SuccessLoadTrending -> {
+                    val trending = (trendingState.value as HomeUiState.SuccessLoadTrending).trending
+                    TrendingSliderSection(
+                        hazeState = hazeState,
+                        allTrendingList = trending.results.take(10)
+                    )
+                }
+                is HomeUiState.ErrorTrending -> {
+                    val errorMessage = (trendingState.value as HomeUiState.ErrorTrending).errorMessage
+                    Toast.makeText(LocalContext.current, "message: $errorMessage", Toast.LENGTH_SHORT).show()
+                    Log.d("cek error", "HomeScreen: $errorMessage")
+                }
+                else -> Unit
+            }
         }
     }
 }
@@ -133,10 +144,10 @@ fun HomeScreen(
 @Composable
 fun TrendingSliderSection(
     hazeState: HazeState,
-    imageList: List<ImageData>
+    allTrendingList: List<AllTrendingItem>
 ) {
     val pagerState = rememberPagerState {
-        imageList.size
+        allTrendingList.size
     }
 
     HorizontalPager(
@@ -157,7 +168,7 @@ fun TrendingSliderSection(
                     .clip(shape = RoundedCornerShape(size = 8.dp))
                     .haze(hazeState),
                 contentScale = ContentScale.Crop,
-                model = imageList[page].imageUrl,
+                model = allTrendingList[page].backdropPath.setImage(),
                 contentDescription = null
             )
 
@@ -169,14 +180,21 @@ fun TrendingSliderSection(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Trending",
+                    text = if (allTrendingList[page].mediaType == "tv") {
+                        allTrendingList[page].name ?: ""
+                    } else allTrendingList[page].title ?: "",
                     color = Color.White,
-                    style = MaterialTheme.typography.headlineMedium
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
-
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "tgl",
+                    text = if (allTrendingList[page].mediaType == "tv") {
+                        allTrendingList[page].firstAirDate ?: ""
+                    } else allTrendingList[page].releaseDate ?: "",
                     color = Color.White,
                     style = MaterialTheme.typography.labelMedium
                 )

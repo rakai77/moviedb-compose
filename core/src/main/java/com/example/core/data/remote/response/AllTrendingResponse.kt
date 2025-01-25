@@ -30,22 +30,25 @@ data class AllTrendingItemResponse(
 	val mediaType: String,
 
 	@field:SerializedName("original_name")
-	val originalName: String,
+	val originalName: String? = null,
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String? = null,
 
 	@field:SerializedName("id")
 	val id: Int,
 
 	@field:SerializedName("original_title")
-	val originalTitle: String,
+	val originalTitle: String? = null,
 
 	@field:SerializedName("title")
-	val title: String,
+	val title: String? = null,
 
 	@field:SerializedName("release_date")
-	val releaseDate: String
+	val releaseDate: String? = null,
+
+	@field:SerializedName("first_air_date")
+	val firstAirDate: String? = null
 )
 
 fun AllTrendingResponse.toDomain() = AllTrending(
@@ -64,5 +67,6 @@ fun AllTrendingItemResponse.toDomain() = AllTrendingItem(
 	this.id,
 	this.originalTitle,
 	this.title,
-	this.releaseDate
+	this.releaseDate,
+	this.firstAirDate
 )

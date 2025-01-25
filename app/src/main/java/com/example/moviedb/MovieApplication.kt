@@ -2,6 +2,7 @@ package com.example.moviedb
 
 import android.app.Application
 import com.example.core.di.coreModule
+import com.example.main.feature_home.di.homeModule
 import com.example.moviedb.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,7 +14,7 @@ class MovieApplication : Application() {
         startKoin {
             androidContext(this@MovieApplication)
             androidLogger()
-            modules(appModule, coreModule)
+            modules(appModule, coreModule, homeModule)
         }
     }
 }
