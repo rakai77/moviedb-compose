@@ -5,6 +5,7 @@ import com.example.core.data.remote.response.toDomain
 import com.example.core.data.remote.service.MovieService
 import com.example.core.domain.model.AllTrending
 import com.example.core.domain.model.Movie
+import com.example.core.domain.model.Series
 import com.example.core.domain.repository.MovieRepository
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.ClientRequestException
@@ -63,6 +64,35 @@ class MovieRepositoryImpl(
                     is SocketTimeoutException -> {
                         emit(BaseResult.Error(t.message ?: "Timeout",null))
                     }
+                    else -> emit(BaseResult.Error(t.message ?: "Something went wrong", null))
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getOnAirSeries(): Flow<BaseResult<Series>> {
+        return flow {
+            try {
+                val response = apiService.getOnAirSeries()
+                emit(BaseResult.Success(response.toDomain()))
+            } catch (t: Throwable) {
+                when (t) {
+                    is ClientRequestException -> {
+                        emit(BaseResult.Error(t.message, t.response.status.value))
+                    }
+
+                    is ServerResponseException -> {
+                        emit(BaseResult.Error(t.message, t.response.status.value))
+                    }
+
+                    is UnknownHostException -> {
+                        emit(BaseResult.Error("Check your internet connection", null))
+                    }
+
+                    is SocketTimeoutException -> {
+                        emit(BaseResult.Error(t.message ?: "Timeout", null))
+                    }
+
                     else -> emit(BaseResult.Error(t.message ?: "Something went wrong", null))
                 }
             }

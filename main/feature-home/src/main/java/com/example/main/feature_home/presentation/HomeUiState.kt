@@ -2,6 +2,7 @@ package com.example.main.feature_home.presentation
 
 import com.example.core.domain.model.AllTrending
 import com.example.core.domain.model.Movie
+import com.example.core.domain.model.OnAirSeries
 
 sealed class HomeUiState {
     data class SuccessLoadTrending(val trending: AllTrending) : HomeUiState()
@@ -9,6 +10,8 @@ sealed class HomeUiState {
     data class LoadingTrending(val isLoading: Boolean) : HomeUiState()
     data class SuccessLoadMoviePop(val movie: Movie) : HomeUiState()
     data class LoadingMoviePop(val isLoading: Boolean) : HomeUiState()
+    data class SuccessOnAirSeries(val series: OnAirSeries) : HomeUiState()
+    data class LoadingOnAirSeries(val isLoading: Boolean) : HomeUiState()
     data object Idle : HomeUiState()
 }
 

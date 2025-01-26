@@ -84,6 +84,7 @@ fun HomeScreen(
     val homeViewModel: HomeViewModel = koinViewModel()
     val trendingState = homeViewModel.trendingState.collectAsState()
     val moviePopState = homeViewModel.moviePopState.collectAsState()
+    val onAirSeriesState = homeViewModel.onAirSeriesState.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -179,6 +180,40 @@ fun HomeScreen(
                     }
                 }
             }
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            if (onAirSeriesState.value is HomeUiState.SuccessOnAirSeries) {
+                val state = onAirSeriesState.value as HomeUiState.SuccessOnAirSeries
+                item {
+                    SectionTitle(
+                        title = stringResource(id = com.example.common_ui.R.string.on_air_series_label),
+                        itemSize = state.series.results.size
+                    ) { }
+                }
+
+                val series = state.series.results.take(10)
+                items(series.chunked(2)) { rowSeries ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        for (item in rowSeries) {
+                            MovieItem(
+                                thumbnailUrl = item.posterPath.setImage(),
+                                rating = item.voteAverage.toString(),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .aspectRatio(2f / 3f)
+                            )
+                        }
+                    }
+                }
+            }
+
             item {
                 Spacer(modifier = Modifier.height(100.dp))
             }
