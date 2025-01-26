@@ -16,8 +16,12 @@ class HomeViewModel(
     private val _trendingState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
     val trendingState = _trendingState.asStateFlow()
 
+    private val _moviePopState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
+    val moviePopState = _moviePopState.asStateFlow()
+
     init {
         getAllTrending()
+        getMoviePopular()
     }
 
     fun getAllTrending() {
@@ -38,6 +42,35 @@ class HomeViewModel(
 
                     is BaseResult.Error -> {
                         _trendingState.update {
+                            HomeUiState.ErrorTrending(
+                                errorMessage = result.errorMessage,
+                                statusCode = result.statusCode
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getMoviePopular() {
+        viewModelScope.launch {
+            _moviePopState.update {
+                HomeUiState.LoadingMoviePop(isLoading = true)
+            }
+            movieUseCase.getMoviePopular().collect { result ->
+                _moviePopState.update {
+                    HomeUiState.LoadingMoviePop(isLoading = false)
+                }
+                when (result) {
+                    is BaseResult.Success -> {
+                        _moviePopState.update {
+                            HomeUiState.SuccessLoadMoviePop(movie = result.data)
+                        }
+                    }
+
+                    is BaseResult.Error -> {
+                        _moviePopState.update {
                             HomeUiState.ErrorTrending(
                                 errorMessage = result.errorMessage,
                                 statusCode = result.statusCode

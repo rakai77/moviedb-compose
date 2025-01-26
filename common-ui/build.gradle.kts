@@ -54,9 +54,11 @@ dependencies {
     api(libs.lottie)
     api(libs.coil)
     api(libs.haze)
-    implementation(libs.compose.animation)
+    api(libs.compose.animation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    debugApi(libs.androidx.ui.tooling)
 }

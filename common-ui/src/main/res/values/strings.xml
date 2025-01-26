@@ -2,4 +2,8 @@
 <resources>
     <string name="home_label">Home</string>
     <string name="profile_label">Profile</string>"
+
+
+    <string name="movie_popular_label">Popular Movie</string>
+    <string name="tv_popular_label">Popular Series</string>
 </resources>

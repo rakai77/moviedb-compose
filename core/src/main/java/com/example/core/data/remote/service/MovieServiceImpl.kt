@@ -2,6 +2,7 @@ package com.example.core.data.remote.service
 
 import com.example.core.data.remote.HttpRoute
 import com.example.core.data.remote.response.AllTrendingResponse
+import com.example.core.data.remote.response.MovieResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -13,6 +14,12 @@ class MovieServiceImpl(
     override suspend fun getAllTrending(): AllTrendingResponse {
         return httpClient.get {
             url(HttpRoute.ALL_TRENDING)
+        }.body()
+    }
+
+    override suspend fun getMoviePopular(): MovieResponse {
+        return httpClient.get {
+            url(HttpRoute.MOVIE_POPULAR)
         }.body()
     }
 }
