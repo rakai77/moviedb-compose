@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.common_ui.navigation.AppRoute
+import com.example.main.feature_cast.presentation.CastScreen
 import com.example.main.feature_home.presentation.HomeScreen
-import com.example.main.feature_profile.presentation.ProfileScreen
 
 @Composable
 fun AppNavigation(
@@ -29,9 +29,9 @@ fun AppNavigation(
         }
 
         composable(
-            route = AppRoute.Profile.route
+            route = AppRoute.Cast.route
         ) {
-            ProfileScreen(
+            CastScreen(
                 navHostController = navHostController
             )
         }

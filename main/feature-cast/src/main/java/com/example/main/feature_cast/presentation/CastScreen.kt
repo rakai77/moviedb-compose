@@ -1,4 +1,4 @@
-package com.example.main.feature_profile.presentation
+package com.example.main.feature_cast.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 
 @Composable
-fun ProfileScreen(
+fun CastScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController
 ) {

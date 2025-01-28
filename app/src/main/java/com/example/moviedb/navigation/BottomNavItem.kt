@@ -12,8 +12,8 @@ val bottomTabs = listOf(
         unselectedIcon = R.drawable.ic_home_outlined,
     ),
     Tab(
-        route = AppRoute.Profile.route,
-        label = R.string.profile_label,
+        route = AppRoute.Cast.route,
+        label = R.string.cast_label,
         selectedIcon = R.drawable.ic_profile_filled,
         unselectedIcon = R.drawable.ic_profile_outlined,
     )
