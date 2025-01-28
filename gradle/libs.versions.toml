@@ -22,6 +22,7 @@ material = "1.12.0"
 ktor="2.3.7"
 koin="4.0.0"
 datastore="1.1.2"
+paging= "3.3.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -81,6 +82,10 @@ koin-android-compose-navgation = { module = "io.insert-koin:koin-androidx-compos
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 
+#Paging
+paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -91,3 +96,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 ktor-network = ["ktor-client-core","ktor-client-android","ktor-engine-okhttp","ktor-client-logging","ktor-client-negotiation","ktor-client-serialization","ktor-serialization-gson", "ktor-client-auth"]
 koin = ["koin-core", "koin-android", "koin-android-compose", "koin-android-compose-navgation"]
 datastore = ["datastore", "datastore-core"]
+paging = ["paging", "paging-compose"]

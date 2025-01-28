@@ -2,6 +2,7 @@
 <resources>
     <string name="home_label">Home</string>
     <string name="cast_label">Cast</string>"
+    <string name="search_label">Search</string>
 
     <string name="movie_popular_label">Popular Movie</string>
     <string name="on_air_series_label">On The Air Series</string>

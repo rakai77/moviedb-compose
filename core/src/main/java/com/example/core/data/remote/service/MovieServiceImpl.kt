@@ -2,11 +2,13 @@ package com.example.core.data.remote.service
 
 import com.example.core.data.remote.HttpRoute
 import com.example.core.data.remote.response.AllTrendingResponse
+import com.example.core.data.remote.response.CastResponse
 import com.example.core.data.remote.response.MovieResponse
 import com.example.core.data.remote.response.SeriesResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 
 class MovieServiceImpl(
@@ -27,6 +29,14 @@ class MovieServiceImpl(
     override suspend fun getOnAirSeries(): SeriesResponse {
         return httpClient.get {
             url(HttpRoute.ON_AIR_SERIES)
+        }.body()
+    }
+
+    override suspend fun getCast(query: String, page: Int): CastResponse {
+        return httpClient.get {
+            url(HttpRoute.CAST)
+            parameter("query", query)
+            parameter("page", page)
         }.body()
     }
 }

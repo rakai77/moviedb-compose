@@ -41,6 +41,7 @@ dependencies {
     api(libs.bundles.ktor.network)
     api(libs.bundles.koin)
     api(libs.bundles.datastore)
+    api(libs.bundles.paging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
