@@ -4,6 +4,7 @@
     <string name="watchlist_label">Watchlist</string>
     <string name="cast_label">Cast</string>"
     <string name="search_label">Search</string>
+    <string name="setting_label">Setting</string>
 
     <string name="movie_popular_label">Popular Movie</string>
     <string name="on_air_series_label">On The Air Series</string>

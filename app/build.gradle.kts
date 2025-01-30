@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":main:feature-home"))
     implementation(project(":main:feature-watchlist"))
     implementation(project(":main:feature-cast"))
+    implementation(project(":main:feature-setting"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

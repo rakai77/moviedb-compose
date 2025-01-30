@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Moviedb" parent="android:Theme.Material.Light.NoActionBar" />
-
     <style name="Theme.MoviedbSplash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/light_theme</item>
+        <item name="windowSplashScreenBackground">@color/dark_theme</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.Moviedb</item>
         <item name="windowSplashScreenAnimationDuration">3000</item>

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/main" />
             <option value="$PROJECT_DIR$/main/feature-cast" />
             <option value="$PROJECT_DIR$/main/feature-home" />
+            <option value="$PROJECT_DIR$/main/feature-setting" />
             <option value="$PROJECT_DIR$/main/feature-watchlist" />
           </set>
         </option>

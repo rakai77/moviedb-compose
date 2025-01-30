@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.common_ui.navigation.AppRoute
 import com.example.common_ui.theme.BlueAccent
 import com.example.common_ui.theme.DarkGrey
 import com.example.common_ui.theme.Orange
@@ -113,7 +114,11 @@ fun HomeScreen(
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = {
+                            navHostController.navigate(AppRoute.Setting.route)
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = "Settings Menu",

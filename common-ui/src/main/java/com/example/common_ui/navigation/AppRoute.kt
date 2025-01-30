@@ -4,5 +4,6 @@ sealed class AppRoute(val route: String) {
     data object Home : AppRoute("home")
     data object Watchlist : AppRoute("watchlist")
     data object Cast : AppRoute("cast")
+    data object Setting : AppRoute("setting")
     data object MovieDetail : AppRoute("movie/{movieId}")
 }
