@@ -10,6 +10,7 @@ interface MovieService {
     suspend fun getAllTrending() : AllTrendingResponse
     suspend fun getMoviePopular() : MovieResponse
     suspend fun getOnAirSeries() : SeriesResponse
-    suspend fun getCast(query: String, page: Int) : CastResponse
+    suspend fun getPopularCast(page: Int) : CastResponse
+    suspend fun getCastFromSearch(query: String, page: Int) : CastResponse
 
 }

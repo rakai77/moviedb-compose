@@ -11,14 +11,25 @@ class CastUseCase(
     private val castRepository: CastRepository,
 ) {
 
-    fun searchCast(query: String) : Flow<PagingData<CastItem>> {
+    fun getPopularCast() : Flow<PagingData<CastItem>> {
+        return Pager(
+            config = PagingConfig(
+                initialLoadSize = 20,
+                pageSize = 20,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { castRepository.getPopularCast() }
+        ).flow
+    }
+
+    fun getCastFromSearch(query: String) : Flow<PagingData<CastItem>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 20,
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { castRepository.getCast(query) }
+            pagingSourceFactory = { castRepository.getCastFromSearch(query) }
         ).flow
     }
 }

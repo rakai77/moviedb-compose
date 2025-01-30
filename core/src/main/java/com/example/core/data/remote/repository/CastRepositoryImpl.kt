@@ -12,9 +12,9 @@ import io.ktor.utils.io.errors.IOException
 import java.net.UnknownHostException
 
 class CastRepositoryImpl(
-    private val movieService: MovieService,
+    private val movieService: MovieService
 ) : CastRepository {
-    override fun getCast(query: String): PagingSource<Int, CastItem> {
+    override fun getPopularCast(): PagingSource<Int, CastItem> {
         return object : PagingSource<Int, CastItem>() {
             override fun getRefreshKey(state: PagingState<Int, CastItem>): Int? {
                 return state.anchorPosition
@@ -23,7 +23,39 @@ class CastRepositoryImpl(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CastItem> {
                 return try {
                     val castPage = params.key ?: 1
-                    val response = movieService.getCast(query, castPage)
+                    val response = movieService.getPopularCast(castPage)
+                    val castData = response.toDomain().results
+
+                    LoadResult.Page(
+                        prevKey = null,
+                        nextKey = if (castData.isEmpty()) null else castPage + 1,
+                        data = castData
+                    )
+                } catch (e: Throwable) {
+                    LoadResult.Error(e)
+                } catch (e: ServerResponseException) {
+                    LoadResult.Error(e)
+                } catch (e: IOException) {
+                    LoadResult.Error(e)
+                } catch (e: SocketTimeoutException) {
+                    LoadResult.Error(e)
+                } catch (e: UnknownHostException) {
+                    LoadResult.Error(e)
+                }
+            }
+        }
+    }
+
+    override fun getCastFromSearch(query: String): PagingSource<Int, CastItem> {
+        return object : PagingSource<Int, CastItem>() {
+            override fun getRefreshKey(state: PagingState<Int, CastItem>): Int? {
+                return state.anchorPosition
+            }
+
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CastItem> {
+                return try {
+                    val castPage = params.key ?: 1
+                    val response = movieService.getCastFromSearch(query, castPage)
                     val castData = response.toDomain().results
 
                     LoadResult.Page(

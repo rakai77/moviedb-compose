@@ -5,5 +5,7 @@ import com.example.core.domain.model.CastItem
 
 interface CastRepository {
 
-    fun getCast(query: String) : PagingSource<Int, CastItem>
+    fun getPopularCast() : PagingSource<Int, CastItem>
+
+    fun getCastFromSearch(query: String) : PagingSource<Int, CastItem>
 }

@@ -32,9 +32,16 @@ class MovieServiceImpl(
         }.body()
     }
 
-    override suspend fun getCast(query: String, page: Int): CastResponse {
+    override suspend fun getPopularCast(page: Int): CastResponse {
         return httpClient.get {
-            url(HttpRoute.CAST)
+            url(HttpRoute.POPLAR_CAST)
+            parameter("page", page)
+        }.body()
+    }
+
+    override suspend fun getCastFromSearch(query: String, page: Int): CastResponse {
+        return httpClient.get {
+            url(HttpRoute.SEARCH_CAST)
             parameter("query", query)
             parameter("page", page)
         }.body()

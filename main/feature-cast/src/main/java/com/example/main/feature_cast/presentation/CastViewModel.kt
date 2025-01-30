@@ -10,9 +10,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
@@ -23,28 +26,47 @@ class CastViewModel(
     private val _query = MutableStateFlow("")
     val query = _query.asStateFlow()
 
-    private val _castUiState = MutableStateFlow<PagingData<CastItem>>(PagingData.empty())
-    val castUiState = _castUiState.asStateFlow()
+    private val _popularCastState = MutableStateFlow<PagingData<CastItem>>(PagingData.empty())
+    val popularCastState = _popularCastState.asStateFlow()
+
+    private val _searchCastState = MutableStateFlow<PagingData<CastItem>>(PagingData.empty())
+    val searchCastState = _searchCastState.asStateFlow()
+
+    val isSearch = _query.map { it.isNotEmpty() }
 
     init {
-        observeCast()
+        observePopularCast()
+        observeSearch()
     }
 
-    private fun observeCast() {
+    private fun observeSearch() {
         viewModelScope.launch {
             _query.debounce(500)
                 .distinctUntilChanged()
                 .flatMapLatest { query ->
-                    castUseCase.searchCast(query)
+                    if (query.isNotEmpty()) {
+                        castUseCase.getCastFromSearch(query).cachedIn(viewModelScope)
+                    } else {
+                        flowOf(PagingData.empty())
+                    }
                 }
-                .cachedIn(viewModelScope)
                 .collect {
-                    _castUiState.value = it
+                    _searchCastState.value = it
                 }
         }
     }
 
     fun setQuery(query: String) {
         _query.value = query
+    }
+
+    private fun observePopularCast() {
+        viewModelScope.launch {
+            castUseCase.getPopularCast()
+                .cachedIn(viewModelScope)
+                .collectLatest {
+                    _popularCastState.value = it
+                }
+        }
     }
 }

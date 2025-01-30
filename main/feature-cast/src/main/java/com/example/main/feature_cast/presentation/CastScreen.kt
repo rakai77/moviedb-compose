@@ -43,7 +43,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.example.common_ui.component.TMDBSearchBar
-import com.example.common_ui.presentation.error.EmptyUi
 import com.example.common_ui.utils.setImage
 import com.example.common_ui.utils.showShimmer
 import org.koin.androidx.compose.koinViewModel
@@ -56,9 +55,11 @@ fun CastScreen(
 
     val viewModel: CastViewModel = koinViewModel()
     val query = viewModel.query.collectAsState()
-    val lazyPagingItems = viewModel.castUiState.collectAsLazyPagingItems()
-    val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
-    val isEmpty = lazyPagingItems.itemCount == 0 && !isRefreshing
+    val isSearch = viewModel.isSearch.collectAsState(initial = false).value
+    val searchPagingItems = viewModel.searchCastState.collectAsLazyPagingItems()
+    val popularPagingItems = viewModel.popularCastState.collectAsLazyPagingItems()
+    val isRefreshing = (searchPagingItems.loadState.refresh is LoadState.Loading && isSearch)
+            || (popularPagingItems.loadState.refresh is LoadState.Loading && !isSearch)
 
     Scaffold(
         topBar = {
@@ -95,44 +96,51 @@ fun CastScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .padding(bottom = 100.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (isRefreshing && lazyPagingItems.itemCount == 0) {
-                CircularProgressIndicator()
-            } else if (isEmpty) {
-                EmptyUi(
-                    label = stringResource(id = com.example.common_ui.R.string.empty_label),
-                    animationResource = com.example.common_ui.R.raw.lottie_empty
-                )
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(lazyPagingItems.itemCount) { index ->
-                        val castItem = lazyPagingItems[index]
-                        if (castItem != null) {
-                            CastItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                name = castItem.name ?: "",
-                                thumbnailUrl = castItem.profilePath?.setImage() ?: ""
-                            )
-                        }
-                    }
-
-                    lazyPagingItems.apply {
-                        when {
-                            loadState.append is LoadState.Loading -> {
-                                item { CircularProgressIndicator() }
+            when {
+                isRefreshing -> {
+                    CircularProgressIndicator()
+                }
+                else -> {
+                    val currentPagingItems = if (isSearch) searchPagingItems else popularPagingItems
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(currentPagingItems.itemCount) { index ->
+                            val castItem = currentPagingItems[index]
+                            if (castItem != null) {
+                                CastItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    name = castItem.name ?: "",
+                                    thumbnailUrl = castItem.profilePath?.setImage() ?: ""
+                                )
                             }
-                            loadState.append is LoadState.Error -> {
-                                item {
-                                    Button(onClick = { retry() }) {
-                                        Text("Retry")
+                        }
+                        currentPagingItems.apply {
+                            when (loadState.append) {
+                                is LoadState.Loading -> {
+                                    item {
+                                        Box(modifier = Modifier
+                                            .fillMaxWidth(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            CircularProgressIndicator()
+                                        }
                                     }
                                 }
+                                is LoadState.Error -> {
+                                    item {
+                                        Button(onClick = { retry() }) {
+                                            Text("Retry")
+                                        }
+                                    }
+                                }
+                                else -> Unit
                             }
                         }
                     }
