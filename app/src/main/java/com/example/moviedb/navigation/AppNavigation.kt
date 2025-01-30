@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.common_ui.navigation.AppRoute
 import com.example.main.feature_cast.presentation.CastScreen
 import com.example.main.feature_home.presentation.HomeScreen
+import com.example.main.feature_watchlist.presentation.WatchlistScreen
 
 @Composable
 fun AppNavigation(
@@ -24,6 +25,14 @@ fun AppNavigation(
             route = AppRoute.Home.route
         ) {
             HomeScreen(
+                navHostController = navHostController
+            )
+        }
+
+        composable(
+            route = AppRoute.Watchlist.route
+        ) {
+            WatchlistScreen(
                 navHostController = navHostController
             )
         }

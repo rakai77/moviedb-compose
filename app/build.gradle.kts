@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":core"))
     implementation(project(":main:feature-home"))
+    implementation(project(":main:feature-watchlist"))
     implementation(project(":main:feature-cast"))
 
     implementation(libs.androidx.core.ktx)
