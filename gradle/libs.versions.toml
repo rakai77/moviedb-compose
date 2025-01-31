@@ -23,6 +23,8 @@ ktor="2.3.7"
 koin="4.0.0"
 datastore="1.1.2"
 paging= "3.3.5"
+room = "2.6.1"
+ksp = "2.0.0-1.0.24"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,11 +88,17 @@ datastore-core = { module = "androidx.datastore:datastore-preferences-core", ver
 paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
+#Room
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 
 [bundles]
 ktor-network = ["ktor-client-core","ktor-client-android","ktor-engine-okhttp","ktor-client-logging","ktor-client-negotiation","ktor-client-serialization","ktor-serialization-gson", "ktor-client-auth"]

@@ -2,11 +2,11 @@ package com.example.core.data.remote.repository
 
 import com.example.core.data.BaseResult
 import com.example.core.data.remote.response.toDomain
-import com.example.core.data.remote.service.MovieService
+import com.example.core.data.remote.service.Service
 import com.example.core.domain.model.AllTrending
 import com.example.core.domain.model.Movie
 import com.example.core.domain.model.Series
-import com.example.core.domain.repository.MovieRepository
+import com.example.core.domain.repository.HomeRepository
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.net.UnknownHostException
 
-class MovieRepositoryImpl(
-    private val apiService: MovieService,
-) : MovieRepository {
+class HomeRepositoryImpl(
+    private val apiService: Service,
+) : HomeRepository {
 
     override suspend fun getAllTrending(): Flow<BaseResult<AllTrending>>{
         return flow {

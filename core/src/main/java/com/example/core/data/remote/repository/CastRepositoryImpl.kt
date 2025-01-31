@@ -3,7 +3,7 @@ package com.example.core.data.remote.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.core.data.remote.response.toDomain
-import com.example.core.data.remote.service.MovieService
+import com.example.core.data.remote.service.Service
 import com.example.core.domain.model.CastItem
 import com.example.core.domain.repository.CastRepository
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -12,7 +12,7 @@ import io.ktor.utils.io.errors.IOException
 import java.net.UnknownHostException
 
 class CastRepositoryImpl(
-    private val movieService: MovieService
+    private val service: Service
 ) : CastRepository {
     override fun getPopularCast(): PagingSource<Int, CastItem> {
         return object : PagingSource<Int, CastItem>() {
@@ -23,7 +23,7 @@ class CastRepositoryImpl(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CastItem> {
                 return try {
                     val castPage = params.key ?: 1
-                    val response = movieService.getPopularCast(castPage)
+                    val response = service.getPopularCast(castPage)
                     val castData = response.toDomain().results
 
                     LoadResult.Page(
@@ -55,7 +55,7 @@ class CastRepositoryImpl(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CastItem> {
                 return try {
                     val castPage = params.key ?: 1
-                    val response = movieService.getCastFromSearch(query, castPage)
+                    val response = service.getCastFromSearch(query, castPage)
                     val castData = response.toDomain().results
 
                     LoadResult.Page(

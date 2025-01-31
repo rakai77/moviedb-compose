@@ -3,14 +3,14 @@ package com.example.main.feature_home.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.data.BaseResult
-import com.example.core.domain.usecase.MovieUseCase
+import com.example.core.domain.usecase.HomeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val movieUseCase: MovieUseCase
+    private val homeUseCase: HomeUseCase
 ) : ViewModel() {
 
     private val _trendingState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
@@ -33,7 +33,7 @@ class HomeViewModel(
             _trendingState.update {
                 HomeUiState.LoadingTrending(isLoading = true)
             }
-            movieUseCase.getAllTrending().collect { result ->
+            homeUseCase.getAllTrending().collect { result ->
                 _trendingState.update {
                     HomeUiState.LoadingTrending(isLoading = false)
                 }
@@ -62,7 +62,7 @@ class HomeViewModel(
             _moviePopState.update {
                 HomeUiState.LoadingMoviePop(isLoading = true)
             }
-            movieUseCase.getMoviePopular().collect { result ->
+            homeUseCase.getMoviePopular().collect { result ->
                 _moviePopState.update {
                     HomeUiState.LoadingMoviePop(isLoading = false)
                 }
@@ -91,7 +91,7 @@ class HomeViewModel(
             _onAirSeriesState.update {
                 HomeUiState.LoadingOnAirSeries(isLoading = true)
             }
-            movieUseCase.getOnAirSeries().collect { result ->
+            homeUseCase.getOnAirSeries().collect { result ->
                 _onAirSeriesState.update {
                     HomeUiState.LoadingOnAirSeries(isLoading = false)
                 }

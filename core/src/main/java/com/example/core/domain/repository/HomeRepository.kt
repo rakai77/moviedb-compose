@@ -6,7 +6,7 @@ import com.example.core.domain.model.Movie
 import com.example.core.domain.model.Series
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
+interface HomeRepository {
 
     suspend fun getAllTrending() : Flow<BaseResult<AllTrending>>
 

@@ -2,10 +2,12 @@ package com.example.core.data.remote.service
 
 import com.example.core.data.remote.response.AllTrendingResponse
 import com.example.core.data.remote.response.CastResponse
+import com.example.core.data.remote.response.MovieDetailResponse
 import com.example.core.data.remote.response.MovieResponse
+import com.example.core.data.remote.response.SeriesDetailResponse
 import com.example.core.data.remote.response.SeriesResponse
 
-interface MovieService {
+interface Service {
 
     suspend fun getAllTrending() : AllTrendingResponse
     suspend fun getMoviePopular() : MovieResponse
@@ -13,4 +15,6 @@ interface MovieService {
     suspend fun getPopularCast(page: Int) : CastResponse
     suspend fun getCastFromSearch(query: String, page: Int) : CastResponse
 
+    suspend fun getMovieDetail(movieId: String) : MovieDetailResponse
+    suspend fun getSeriesDetail(seriesId: String) : SeriesDetailResponse
 }
