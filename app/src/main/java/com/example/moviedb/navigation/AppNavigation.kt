@@ -50,7 +50,6 @@ fun AppNavigation(
             route = AppRoute.Setting.route
         ) {
             SettingScreen(
-                navHostController = navHostController,
                 onNavigateBack = {
                     navHostController.popBackStack()
                 }

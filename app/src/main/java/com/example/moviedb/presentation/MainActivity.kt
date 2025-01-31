@@ -13,8 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.common_ui.component.TMDBNavigationBar
+import com.example.common_ui.navigation.AppRoute
 import com.example.common_ui.theme.MoviedbTheme
 import com.example.moviedb.navigation.AppNavigation
 import com.example.moviedb.navigation.bottomTabs
@@ -30,7 +32,7 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: MainViewModel = koinViewModel()
             val state by mainViewModel.darkModeState.collectAsState()
 
-            MoviedbTheme {
+            MoviedbTheme(darkTheme = state) {
                 MovieDBApp()
             }
         }
@@ -41,6 +43,11 @@ class MainActivity : ComponentActivity() {
 fun MovieDBApp() {
     val navController = rememberNavController()
 
+    val topLevelScreens = listOf(AppRoute.Home.route, AppRoute.Watchlist.route, AppRoute.Cast.route)
+    val currentRoute by navController.currentBackStackEntryAsState()
+
+    val showBottomNav = topLevelScreens.contains(currentRoute?.destination?.route)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,9 +57,11 @@ fun MovieDBApp() {
 
         AppNavigation(navHostController = navController)
 
-        TMDBNavigationBar(
-            navController = navController,
-            items = bottomTabs
-        )
+        if (showBottomNav) {
+            TMDBNavigationBar(
+                navController = navController,
+                items = bottomTabs
+            )
+        }
     }
 }

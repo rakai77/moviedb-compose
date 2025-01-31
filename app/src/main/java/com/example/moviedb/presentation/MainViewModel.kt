@@ -16,12 +16,6 @@ class MainViewModel(private val appDataStore: AppDataStore) : ViewModel() {
     private val _darkModeState = MutableStateFlow(false)
     val darkModeState = _darkModeState.asStateFlow()
 
-    fun storeDarkMode(isDarkMode: Boolean) {
-        viewModelScope.launch {
-            appDataStore.dataStore(AppDataStore.IS_DARK_MODE, isDarkMode)
-        }
-    }
-
     private fun getDarkMode() {
         viewModelScope.launch {
             appDataStore.isDarkMode.collect {
