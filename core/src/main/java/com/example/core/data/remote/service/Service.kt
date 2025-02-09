@@ -2,6 +2,7 @@ package com.example.core.data.remote.service
 
 import com.example.core.data.remote.response.AllTrendingResponse
 import com.example.core.data.remote.response.CastResponse
+import com.example.core.data.remote.response.CreditsResponse
 import com.example.core.data.remote.response.MovieDetailResponse
 import com.example.core.data.remote.response.MovieResponse
 import com.example.core.data.remote.response.SeriesDetailResponse
@@ -17,4 +18,5 @@ interface Service {
 
     suspend fun getMovieDetail(movieId: String) : MovieDetailResponse
     suspend fun getSeriesDetail(seriesId: String) : SeriesDetailResponse
+    suspend fun getMovieCredits(movieId: String) : CreditsResponse
 }

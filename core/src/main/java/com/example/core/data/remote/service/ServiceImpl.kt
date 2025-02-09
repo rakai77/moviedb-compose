@@ -3,6 +3,7 @@ package com.example.core.data.remote.service
 import com.example.core.data.remote.HttpRoute
 import com.example.core.data.remote.response.AllTrendingResponse
 import com.example.core.data.remote.response.CastResponse
+import com.example.core.data.remote.response.CreditsResponse
 import com.example.core.data.remote.response.MovieDetailResponse
 import com.example.core.data.remote.response.MovieResponse
 import com.example.core.data.remote.response.SeriesDetailResponse
@@ -60,4 +61,11 @@ class ServiceImpl(
             url(HttpRoute.SERIES_DETAIL.replace("{series_id}", seriesId))
         }.body()
     }
+
+    override suspend fun getMovieCredits(movieId: String): CreditsResponse {
+        return httpClient.get {
+            url(HttpRoute.MOVIE_CREDITS.replace("{movie_id}", movieId))
+        }.body()
+    }
+
 }

@@ -16,6 +16,8 @@ class MovieDetailViewModel(
     private val _movieDetailState = MutableStateFlow<MovieDetailState>(MovieDetailState.Idle)
     val movieDetailState = _movieDetailState.asStateFlow()
 
+    private val _creditsState = MutableStateFlow<MovieDetailState>(MovieDetailState.Idle)
+    val creditsState = _creditsState.asStateFlow()
 
     fun getMovieDetail(id: String) {
         viewModelScope.launch {
@@ -34,6 +36,31 @@ class MovieDetailViewModel(
                     }
                     is BaseResult.Error -> {
                         _movieDetailState.update {
+                            MovieDetailState.Error(errorMessage = result.errorMessage)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getCredits(id: String) {
+        viewModelScope.launch {
+            _creditsState.update {
+                MovieDetailState.LoadingCredits(isLoading = true)
+            }
+            movieUseCase.getMovieCredits(id).collect { result ->
+                _creditsState.update {
+                    MovieDetailState.LoadingCredits(isLoading = false)
+                }
+                when(result){
+                    is BaseResult.Success -> {
+                        _creditsState.update {
+                            MovieDetailState.SuccessCredits(credits = result.data)
+                        }
+                    }
+                    is BaseResult.Error -> {
+                        _creditsState.update {
                             MovieDetailState.Error(errorMessage = result.errorMessage)
                         }
                     }

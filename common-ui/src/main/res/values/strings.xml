@@ -10,4 +10,6 @@
     <string name="on_air_series_label">On The Air Series</string>
 
     <string name="empty_label">No Data</string>
+    <string name="synopsys_label">Synopsys</string>
+    <string name="director_label">Director</string>
 </resources>

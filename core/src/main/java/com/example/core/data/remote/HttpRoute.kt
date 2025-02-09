@@ -11,4 +11,7 @@ object HttpRoute {
     // detail
     const val MOVIE_DETAIL = "movie/{movie_id}"
     const val SERIES_DETAIL = "tv/{series_id}"
+
+    //credits
+    const val MOVIE_CREDITS = "movie/{movie_id}/credits"
 }
