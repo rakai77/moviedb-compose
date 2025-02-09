@@ -65,7 +65,10 @@ data class MovieDetailResponse(
 	val homepage: String? = null,
 
 	@field:SerializedName("status")
-	val status: String? = null
+	val status: String? = null,
+
+	@field:SerializedName("runtime")
+	val runtime: Int? = null
 )
 
 data class GenresResponse(
@@ -113,7 +116,8 @@ fun MovieDetailResponse.toDomain() = MovieDetail(
 	tagline = this.tagline,
 	adult = this.adult,
 	homepage = this.homepage,
-	status = this.status
+	status = this.status,
+	runtime = this.runtime
 )
 
 fun GenresResponse.toDomain() = Genres(

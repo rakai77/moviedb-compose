@@ -3,6 +3,7 @@ package com.example.main.feature_home.presentation
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,10 +59,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.common_ui.navigation.AppRoute
 import com.example.common_ui.theme.BlueAccent
 import com.example.common_ui.theme.DarkGrey
 import com.example.common_ui.theme.Orange
@@ -77,7 +75,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navHostController: NavHostController
+    onNavigateToSetting: () -> Unit,
+    onNavigateToMovieDetail: (String) -> Unit,
 ) {
 
     val hazeState = remember { HazeState() }
@@ -115,9 +114,7 @@ fun HomeScreen(
                         )
                     }
                     IconButton(
-                        onClick = {
-                            navHostController.navigate(AppRoute.Setting.route)
-                        }
+                        onClick = onNavigateToSetting
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
@@ -179,7 +176,10 @@ fun HomeScreen(
                                 rating = movie.voteAverage.toString(),
                                 modifier = Modifier
                                     .weight(1f)
-                                    .aspectRatio(2f / 3f)
+                                    .aspectRatio(2f / 3f),
+                                onClick = {
+                                    onNavigateToMovieDetail.invoke(movie.id.toString())
+                                }
                             )
                         }
                     }
@@ -212,7 +212,8 @@ fun HomeScreen(
                                 rating = item.voteAverage.toString(),
                                 modifier = Modifier
                                     .weight(1f)
-                                    .aspectRatio(2f / 3f)
+                                    .aspectRatio(2f / 3f),
+                                onClick = {}
                             )
                         }
                     }
@@ -348,7 +349,8 @@ fun SectionTitle(
 fun MovieItem(
     thumbnailUrl: String,
     rating: String,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: () -> Unit
 ) {
 
     var showShimmer by remember {
@@ -357,6 +359,7 @@ fun MovieItem(
 
     Box(
         modifier = modifier
+            .clickable { onClick() }
             .clip(RoundedCornerShape(12.dp))
     ) {
         AsyncImage(
