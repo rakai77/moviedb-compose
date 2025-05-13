@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,11 +45,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.common_ui.theme.Red
 import com.example.common_ui.theme.WhiteGrey
 import com.example.common_ui.utils.dateConvert
 import com.example.common_ui.utils.setImage
 import com.example.common_ui.utils.showShimmer
 import com.example.core.domain.model.MovieDetail
+import com.example.main.feature_home.R
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
@@ -133,13 +136,15 @@ fun MovieDetailScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
                 ) {
-                    items(state.credits.cast.size) { index ->
+                    items(state.credits.cast.take(15).size) { index ->
                         CastCrewItem(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp),
+                                .padding(end = 8.dp),
                             profileUrl = state.credits.cast[index].profilePath.setImage(),
                             name = state.credits.cast[index].name,
                             job = state.credits.cast[index].character
@@ -161,6 +166,11 @@ fun HeaderDetailSection(
     movieDetail: MovieDetail,
     onBackClick: () -> Unit
 ) {
+
+    var isFavorite by remember {
+        mutableStateOf(false)
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -201,6 +211,24 @@ fun HeaderDetailSection(
                 modifier = Modifier,
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 tint = WhiteGrey,
+                contentDescription = null
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .padding(top = 56.dp, end = 16.dp)
+                .hazeChild(
+                    hazeState,
+                    style = HazeMaterials.thin(),
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .size(36.dp)
+                .align(Alignment.TopEnd),
+            onClick = { isFavorite = !isFavorite }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                tint = if (isFavorite) Red else WhiteGrey,
                 contentDescription = null
             )
         }
